@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+    id 'jacoco'
+    id 'org.kordamp.gradle.jandex' version '0.6.0'
+}
+
+ext {
+    togglz_version = '2.8.0'
+    aws_sdk_version = '2.15.0'
+    testcontainers_version = '1.15.1'
+}
+
+Properties properties = new Properties()
+File propertiesFile = project.rootProject.file('local.properties')
+if (propertiesFile.exists()) {
+    properties.load(propertiesFile.newDataInputStream())
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-rest-client'
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-hibernate-validator'
+    implementation 'io.quarkus:quarkus-amazon-ses'
+    implementation 'io.quarkus:quarkus-smallrye-health'
+    // implementation 'cl.company:commons-logging:2.0.0-dev.65afe3f'
+    implementation "org.togglz:togglz-core:$togglz_version"
+
+    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
+    compileOnly 'org.jboss.resteasy:resteasy-jaxrs:3.0.12.Final'
+
+    implementation platform("software.amazon.awssdk:bom:$aws_sdk_version")
+    implementation "software.amazon.awssdk:url-connection-client"
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'org.mockito:mockito-core:3.5.13'
+    testImplementation 'net.javacrumbs.json-unit:json-unit:2.21.0'
+    testImplementation 'com.tngtech.archunit:archunit:0.14.1'
+    testImplementation "org.togglz:togglz-testing:$togglz_version"
+    testImplementation "org.togglz:togglz-junit5:$togglz_version"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainers_version"
+    testImplementation "org.testcontainers:localstack:$testcontainers_version"
+    testImplementation "com.amazonaws:aws-java-sdk-core:1.11.774"
+}
+
+group 'cl.company.omypay'
+//version '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+jacoco {
+    toolVersion = "0.8.3"
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled false
+        xml.enabled true
+        html.enabled true
+    }
+}

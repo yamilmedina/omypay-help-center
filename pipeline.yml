@@ -1,0 +1,68 @@
+version: 1.0
+type: java
+metadata:
+  productId: 'os'
+  componentId: 'help-center-service'
+  version: '1.0.0'
+tools:
+  java: 11
+  gradle: default
+automationTool:
+  name: gradle
+  configFile: 'build.gradle'
+agent:
+  size: "l"
+stages:
+  compile:
+    enabled: true
+    commands:
+      - make build-artifact
+  unitTest:
+    enabled: true
+    junitResultsPath: '**/test-results/**/*.xml'
+    commands:
+      - make run-tests
+    coverage:
+      enabled: true
+      tool: jacoco
+      execPattern: '**/build/jacoco/*.exec'
+      sourcePattern: 'src/main/java'
+      exclusionPattern: 'src/test/*'
+      classPattern: '**/build/classes'
+      thresholds:
+        classCoverage:
+          healthy: 80
+          unHealthy: 50
+          failure: 10
+        methodCoverage:
+          healthy: 80
+          unHealthy: 50
+          failure: 10
+        lineCoverage:
+          healthy: 80
+          unHealthy: 50
+          failure: 10
+        instructionCoverage:
+          healthy: 80
+          unHealthy: 50
+          failure: 10
+        branchCoverage:
+          healthy: 80
+          unHealthy: 50
+          failure: 10
+  linter:
+    enabled: false
+    commands:
+  staticAnalysis:
+    enabled: true
+    name: 'omypay-help-center-service'
+  securityAnalysis:
+    enabled: true
+    name: 'omypay'
+    version: 'help-center-service'
+  archive:
+    enabled: true
+    commands:
+      - make build-image
+    artifacts:
+      - type: docker

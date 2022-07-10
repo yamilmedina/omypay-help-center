@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "code": 0,
+  "message": "Success",
+  "data": [
+    {
+      "key": "IN_TRANSITION",
+      "value": true
+    },
+    {
+      "key": "HELP_CENTER_AVAILABLE",
+      "value": true
+    }
+  ]
+}
