@@ -1,5 +1,4 @@
 # help-center-service project
-[![Build Status](https://ci.tools.company.cl/buildStatus/icon?job=os%2Fhelp-center-service%2Fdevelop&subject=develop%20build%20duration%20%24%7Bduration%7D)](https://ci.tools.tbk.cl/job/os/job/help-center-service/job/develop/)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
